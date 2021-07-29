@@ -1,0 +1,29 @@
+- hosts: web-servers
+  become: true
+  roles:
+    #Install mysql5.6 on ubuntu20.04
+  - role: Mysql_5.6
+    tags: mysql5.6_on_ubuntu20.04
+  # Install AWS Cli
+    # - role: AWS_CLI
+    #   tags: aws_cli
+
+   # Copy Data from Amazon S3 with Ansible-Vault
+    # - role: s3-operations
+    #   tags: amaons3
+
+  # Install Mysql server
+    # - role: mysql-server
+    #   tags: sever
+
+  # Install Mysql client
+    # - role: mysql-client
+    #   tags: client
+
+    # Install pymysql
+    # - role: pymysql
+    #   tags: pymysql
+
+  # Add Root and Bob user USING Jinja2 templete
+    # - role: mysql_DB
+    #   tags: create DB
