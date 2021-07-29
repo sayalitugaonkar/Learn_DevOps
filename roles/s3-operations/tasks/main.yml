@@ -1,0 +1,14 @@
+- name : Simple GET operation
+
+ # vars_files:
+ #  - test-vault.yml
+
+  amazon.aws.aws_s3:
+ #     auth:
+            aws_access_key: "{{ aws_access_key }}"
+            aws_secret_key: "{{ aws_secret_key }}"
+            bucket: sayaliawsbucket
+            object: /healthcare-technology-doctor-using-digital-tablet-icon-medical-network-hospital-background-162019727.jpg
+            dest: /home/ubuntu/sayali-ansible/thealthcare-technology-doctor-using-digital-tablet-icon-medical-network-hospital-background-162019727.jpg
+            mode: get
+               

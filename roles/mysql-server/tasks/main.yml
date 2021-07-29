@@ -1,0 +1,6 @@
+---
+- name: Install mysql server
+  become: true
+  apt:
+    name: mysql-server
+    state: present

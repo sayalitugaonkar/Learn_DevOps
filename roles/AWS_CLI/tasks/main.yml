@@ -1,0 +1,6 @@
+---
+- name: Install aws-cli
+  become: true
+  apt:
+    name: awscli
+    state: present

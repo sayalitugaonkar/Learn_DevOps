@@ -1,0 +1,42 @@
+---
+
+# - name: ensure mysql is enabled to run on startup  
+#   service: name=mysql state=started enabled=true
+- name: start mysql
+  systemd:
+    name: mysql.service
+    state: started
+
+- name: copy my.cnf
+  tags: server:settings
+  template:
+     src: my.cnf.j2
+     dest: '/etc/mysql/my.cnf'
+  notify: restart mysql
+
+
+- name: set password for root@localhost
+  mysql_user:
+    name: root
+    host: localhost
+    password: '{{ server_password }}'
+    login_user: root
+    login_unix_socket: '{{ mysql_server_socket }}'
+
+
+- name: Create new databases with names 'foo' and 'bar'
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name:
+      - foo
+      - bar 
+    state: present
+
+
+
+- name: Create database user with name 'bob'
+  community.mysql.mysql_user:
+    name: '{{ bob_User }}'
+    password: '{{ bob_User_password }}'
+    priv: '*.*:ALL'
+    state: present

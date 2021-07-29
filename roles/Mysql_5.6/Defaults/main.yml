@@ -1,0 +1,10 @@
+#     url: https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-server_5.6.48-1debian9_amd64.deb-bundle.tar
+my_package_url: https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-server_5.6.48-1debian9_amd64.deb-bundle.tar
+my_package_name_common: mysql-common_5.6.48-1debian9_amd64
+my_package_name_community_client: mysql-community-client_5.6.48-1debian9_amd64
+my_package_name_client: mysql-client_5.6.48-1debian9_amd64
+my_package_name_community_server: mysql-community-server_5.6.48-1debian9_amd64
+
+my_package_name: mysql-server_5.6.48-1debian9_amd64
+
+ansible_env: ubuntu
