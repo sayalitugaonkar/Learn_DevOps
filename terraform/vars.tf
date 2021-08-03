@@ -13,5 +13,11 @@ variable "security_gp" {
 }
 
 variable "ami" {    
-    default = "ami-04db49c0fb2215364" //Amazon Linux 2 AMI (HVM), SSD Volume Typ
+    default = "ami-0c1a7f89451184c8b" //Ubuntu Server 20.04 LTS (HVM), SSD Volume Typ
 }
+
+variable "ami_bastion" {    
+    default = "ami-0b3ed0a3f4fadb26e" // Bastion
+}
+
+

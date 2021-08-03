@@ -86,22 +86,72 @@ resource "aws_nat_gateway" "example" {
   depends_on = [aws_internet_gateway.prod-igw]
 }
 
+data "aws_security_group" "default" {
+  name   = "default"
+  vpc_id = aws_vpc.main.id
+}
+
+
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow ssh inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "ssh from bastion"
+    from_port        = 22
+    to_port          = 22
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol         = "tcp"
+
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_ssh"
+  }
+}
+
+
+
+
+resource "aws_instance" "Bastion" {
+  instance_type = "t2.micro"
+  ami = "${var.ami_bastion}" 
+  key_name = "Sayali_mac"
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id,"${data.aws_security_group.default.id}"]
+  subnet_id     = aws_subnet.prod-subnet-public-1.id  
+  tags = {
+    "Name" = "Bastion_server"
+  }
+}
+
 
 resource "aws_instance" "ec2instance" {
   instance_type = "t2.micro"
-  ami = "${var.ami}" # Amazon Linux 2 AMI (HVM), SSD Volume Type
+  ami = "${var.ami}" 
   subnet_id = aws_subnet.prod-subnet-private-1.id
   disable_api_termination = false
   ebs_optimized = false
+  key_name = "Bastion"
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id,"${data.aws_security_group.default.id}"]
   depends_on        = ["aws_nat_gateway.example"]
   root_block_device {
     volume_size = "10"
   }
   tags = {
-    "Name" = "Server01"
+    "Name" = "Private-01"
   }
 }
-
 output "instance_private_ip" {
   value = aws_instance.ec2instance.private_ip
 }
+
+
+
